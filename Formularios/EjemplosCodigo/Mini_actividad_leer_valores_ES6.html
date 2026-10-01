@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mini-actividad (ES6): leer valores de un formulario</title>
+    <!-- "defer": el script se ejecuta cuando el HTML ya está cargado -->
+    <script defer>
+      const mostrarValores = () => {
+        // 1. Texto y textarea
+        const nombre = document.querySelector("#nombre").value;
+        const comentario = document.querySelector("#comentario").value;
+
+        // 2. Radio: el selector :checked devuelve directamente el marcado (o null)
+        const radioMarcado = document.querySelector(
+          'input[name="pregunta"]:checked',
+        );
+        const respuesta = radioMarcado
+          ? radioMarcado.value
+          : "(ninguna seleccionada)";
+
+        // 3. Checkbox
+        const condiciones = document.querySelector("#condiciones").checked;
+        const privacidad = document.querySelector("#privacidad").checked;
+
+        // 4. Select
+        const lista = document.querySelector("#opciones");
+        const indice = lista.selectedIndex;
+        const { value, text } = lista.options[indice]; // desestructuración
+
+        // Template literal: texto con variables dentro de ${ }
+        const mensaje = `Nombre: ${nombre}
+Comentario: ${comentario}
+
+Pregunta: ${respuesta}
+
+Acepta condiciones: ${condiciones}
+Leida la privacidad: ${privacidad}
+
+Select -> indice: ${indice} | value: ${value} | texto: ${text}`;
+
+        alert(mensaje);
+      };
+
+      // addEventListener en vez de onclick en el HTML
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .querySelector("#mostrar")
+          .addEventListener("click", mostrarValores);
+      });
+    </script>
+  </head>
+
+  <body>
+    <h1>Mini-actividad: leer valores (ES6)</h1>
+
+    <form id="formulario" action="#">
+      <h3>Texto y textarea</h3>
+      <label for="nombre">Nombre: </label>
+      <input type="text" id="nombre" />
+      <br /><br />
+      <label for="comentario">Comentario: </label><br />
+      <textarea id="comentario" rows="3" cols="30"></textarea>
+
+      <h3>Radiobuttons</h3>
+      <input type="radio" name="pregunta" id="pregunta_si" value="si" />
+      <label for="pregunta_si">SI</label>
+      <input type="radio" name="pregunta" id="pregunta_no" value="no" />
+      <label for="pregunta_no">NO</label>
+      <input type="radio" name="pregunta" id="pregunta_nsnc" value="nsnc" />
+      <label for="pregunta_nsnc">NS/NC</label>
+
+      <h3>Checkbox</h3>
+      <input
+        type="checkbox"
+        name="condiciones"
+        id="condiciones"
+        value="condiciones"
+      />
+      <label for="condiciones">He leído y acepto las condiciones</label>
+      <br />
+      <input
+        type="checkbox"
+        name="privacidad"
+        id="privacidad"
+        value="privacidad"
+      />
+      <label for="privacidad">He leído la política de privacidad</label>
+
+      <h3>Select</h3>
+      <select id="opciones" name="opciones">
+        <option value="1">Primer valor</option>
+        <option value="2">Segundo valor</option>
+        <option value="3">Tercer valor</option>
+        <option value="4">Cuarto valor</option>
+      </select>
+
+      <br /><br />
+      <!-- Ya no hay onclick: el evento se conecta desde el JavaScript -->
+      <input type="button" id="mostrar" value="Mostrar valores" />
+    </form>
+  </body>
+</html>

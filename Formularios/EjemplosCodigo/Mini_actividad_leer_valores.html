@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mini-actividad: leer valores de un formulario</title>
+    <script>
+      function mostrarValores() {
+        let mensaje = "";
+
+        // 1. Cuadro de texto y textarea: .value
+        mensaje += "Nombre: " + document.getElementById("nombre").value + "\n";
+        mensaje +=
+          "Comentario: " + document.getElementById("comentario").value + "\n\n";
+
+        // 2. Radiobuttons: recorrer el grupo y ver cual tiene checked
+        let radios = document.getElementsByName("pregunta");
+        let respuesta = "(ninguna seleccionada)";
+        for (let i = 0; i < radios.length; i++) {
+          if (radios[i].checked) {
+            respuesta = radios[i].value;
+            break;
+          }
+        }
+        mensaje += "Pregunta: " + respuesta + "\n\n";
+
+        // 3. Checkbox: cada uno es independiente, se comprueba por separado
+        let condiciones = document.getElementById("condiciones");
+        let privacidad = document.getElementById("privacidad");
+        mensaje += "Acepta condiciones: " + condiciones.checked + "\n";
+        mensaje += "Leida la privacidad: " + privacidad.checked + "\n\n";
+
+        // 4. Select: options + selectedIndex
+        let lista = document.getElementById("opciones");
+        let indice = lista.selectedIndex;
+        let opcion = lista.options[indice];
+        mensaje +=
+          "Select -> indice: " +
+          indice +
+          " | value: " +
+          opcion.value +
+          " | texto: " +
+          opcion.text;
+
+        alert(mensaje);
+      }
+    </script>
+  </head>
+
+  <body>
+    <h1>Mini-actividad: leer valores</h1>
+
+    <form id="formulario" action="#">
+      <h3>Texto y textarea</h3>
+      <label for="nombre">Nombre: </label>
+      <input type="text" id="nombre" />
+      <br /><br />
+      <label for="comentario">Comentario: </label><br />
+      <textarea id="comentario" rows="3" cols="30"></textarea>
+
+      <h3>Radiobuttons</h3>
+      <input type="radio" name="pregunta" id="pregunta_si" value="si" />
+      <label for="pregunta_si">SI</label>
+      <input type="radio" name="pregunta" id="pregunta_no" value="no" />
+      <label for="pregunta_no">NO</label>
+      <input type="radio" name="pregunta" id="pregunta_nsnc" value="nsnc" />
+      <label for="pregunta_nsnc">NS/NC</label>
+
+      <h3>Checkbox</h3>
+      <input
+        type="checkbox"
+        name="condiciones"
+        id="condiciones"
+        value="condiciones"
+      />
+      <label for="condiciones">He leído y acepto las condiciones</label>
+      <br />
+      <input
+        type="checkbox"
+        name="privacidad"
+        id="privacidad"
+        value="privacidad"
+      />
+      <label for="privacidad">He leído la política de privacidad</label>
+
+      <h3>Select</h3>
+      <select id="opciones" name="opciones">
+        <option value="1">Primer valor</option>
+        <option value="2">Segundo valor</option>
+        <option value="3">Tercer valor</option>
+        <option value="4">Cuarto valor</option>
+      </select>
+
+      <br /><br />
+      <input type="button" value="Mostrar valores" onclick="mostrarValores()" />
+    </form>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ejercicio 17: limitar caracteres en un textarea</title>
+  <style>
+    #info { margin-top: 6px; font-family: sans-serif; }
+    #info.aviso { color: red; font-weight: bold; }
+  </style>
+  <script>
+    var MAXIMO = 100;
+
+    // Se ejecuta ANTES de que la tecla se escriba (onkeypress).
+    // Devolver false cancela la tecla; devolver true la deja pasar.
+    function limita(elEvento, maximoCaracteres) {
+      var elemento = document.getElementById("texto");
+      var evento = elEvento || window.event;
+      var codigo = evento.charCode || evento.keyCode;
+
+      // 8 = Backspace, 46 = Supr, 37 = flecha izq., 39 = flecha dcha.
+      var teclasEspeciales = [8, 37, 39, 46];
+
+      if (elemento.value.length >= maximoCaracteres) {
+        // Al llegar al maximo, solo se permiten las teclas especiales
+        return teclasEspeciales.indexOf(codigo) != -1;
+      }
+      return true;
+    }
+
+    // Se ejecuta DESPUES de que la tecla se escriba (onkeyup).
+    function actualizaInfo(maximoCaracteres) {
+      var elemento = document.getElementById("texto");
+      var info = document.getElementById("info");
+
+      // Por si se ha pegado texto de mas (Ctrl+V o con el raton)
+      if (elemento.value.length > maximoCaracteres) {
+        elemento.value = elemento.value.substring(0, maximoCaracteres);
+      }
+
+      var restantes = maximoCaracteres - elemento.value.length;
+      info.innerHTML = "Puedes escribir " + restantes + " caracteres adicionales";
+
+      // Ampliacion: contador en rojo cuando quedan menos de 10
+      info.className = restantes < 10 ? "aviso" : "";
+    }
+
+    window.onload = function () {
+      document.getElementById("texto").focus();
+    };
+  </script>
+</head>
+
+<body>
+  <h1>Ejercicio 17</h1>
+  <p>Escribe en el cuadro: el máximo es de 100 caracteres.</p>
+
+  <textarea id="texto" rows="5" cols="40"
+            onkeypress="return limita(event, 100);"
+            onkeyup="actualizaInfo(100);"
+            oninput="actualizaInfo(100);"></textarea>
+  <div id="info">Puedes escribir 100 caracteres adicionales</div>
+</body>
+</html>
