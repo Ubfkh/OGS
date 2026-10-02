@@ -70,14 +70,20 @@
 				}
 
 				return ok;
-			}	
+			}
+
+			function limpiar () {
+				let spans = document.getElementsByTagName('span');
+				for (let i=0; i < spans.length; i++)
+					spans[i].textContent = ' ';
+			}
 		</script>
 	</head>
 
 	<body>
 
 		<h1>Ejercicio Validación de Formularios</h1>
-		<form id="formulario_1" onsubmit="return comprobar()">
+		<form id="formulario_1" onsubmit="return comprobar()" onreset="limpiar()">
 		<p>
 			<h3>Formulario de Registro:</h3>
 			<label for="nombre">Nombre: </label>
