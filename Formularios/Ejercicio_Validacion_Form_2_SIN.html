@@ -11,7 +11,146 @@
 		<script src="Utilidades.js"></script>
 		<script>
 
-		
+			function comprobar (){
+
+				//creamos un booleano que si es true enviará el formulario, si es false no
+				let ok = true;
+
+				//cogemos la longitud del nombre y la comprobamos
+				let longNombre = document.getElementById('nombre').value;
+				longNombre = longNombre.length;
+				
+				//Si la longitud es menor que 2, saltamos el error, si no, pues no
+				const span1 = document.getElementById('info_nombre');
+				if (longNombre < 2){
+					span1.textContent = "El mínimo es 2 caracteres, lo pone ahí, lee un poco, porfa";
+					ok = false;
+				} else {
+					span1.textContent = " ";
+				}
+
+				//apellido
+				const longApell = document.getElementById('apellidos').value.length;
+				const span5 = document.getElementById('info_apellidos');
+				if (longApell < 4){
+					span5.textContent = "El mínimo es 4 caracteres ¿No sabes leer?";
+					ok = false;
+				} else {
+					span5.textContent = " ";
+				}
+
+
+				//cogemos el dni y lo comprobamos
+				const dni = document.getElementById('dni').value;
+
+				const span2 = document.getElementById('info_dni');
+				//Comparamos el texto introducido por el usuario con el formato
+				const regexDNI = /^[0-9]{8}[A-Z]$/;
+				if (!regexDNI.test(dni)){
+					span2.textContent = "Formato incorrecto, un DNI siempre tiene 8 números y una letra, mira el tuyo y lo descubrirás";
+					ok = false;
+				} else{
+					span2.textContent = ' ';
+				}
+
+				//fecha
+				const dia = Number(document.getElementById('f_dia').value);
+				const mes = Number(document.getElementById('f_mes').value) - 1;
+				const ano = Number(document.getElementById('f_ano').value);
+
+				let fecha = new Date(ano, mes, dia);
+
+				const span6 = document.getElementById('info_fecha');
+				if (fecha.getFullYear() == ano && fecha.getMonth() == mes && fecha.getDate() == dia){
+					span6.textContent = ' ';
+				} else {
+					span6.textContent = 'La fecha no existe, ponla bien, que si no no sirve';
+					ok = false;
+				}
+				
+				//sugerencia
+				const sug = document.getElementById('sugerencia').value;
+
+				const span4 = document.getElementById('info_sugerencia');
+				if (sug == ''){
+					span4.textContent = 'Porfa, sugiere algo, que si no me aburro';
+					ok = false;
+				} else {
+					span4.textContent = ' ';
+				}
+
+				//sexo
+				const f = document.getElementById('femenino');
+				const m = document.getElementById('masculino');
+				const n = document.getElementById('ni_me_acuerdo');
+				const span7 = document.getElementById('info_sexo');
+				if (f.checked || m.checked){
+					span7.textContent = ' ';
+				} else if (n.checked){
+					span7.textContent = 'Yo tampoco tengo, te acompaño en el sentimiento :('
+				} else {
+					span7.textContent = 'Selecciona una, mira que te lo he puesto clarito para que veas que hay que seleccionar una opción';
+					ok = false;
+				}
+
+				//estatura
+				const estatura = document.getElementById('estatura').value;
+				const span11 = document.getElementById('info_estatura');
+				if (estatura == ""){
+					span11.textContent = '¿Acaso no mides? Pon un número aunque sea falso'
+					ok = false;
+				} else {
+					span11.textContent = ' ';
+				}
+
+				//estado civil
+				const estadoCivil = document.getElementById('estado_civil').value;
+				const span8 = document.getElementById('info_estado_civil');
+
+				if (estadoCivil == '-1'){
+					span8.textContent = 'Elige una opción, si ya has tenido que ver seleccionadores así, sabes cómo va'
+					ok = false;
+				} else {
+					span8.textContent = ' ';
+				}
+
+
+				//cerveza
+				const cajitas = document.getElementsByName('bebidas');
+				let cant = 0;
+
+				for (let i=0; i < cajitas.length; i++){
+					if (cajitas[i].checked)
+						cant++
+				}
+
+				const span9 = document.getElementById('info_bebidas');
+				if (cant < 3){
+					span9.textContent = 'Mira, te pone claramente MINIMO 3 OPCIONES';
+					ok = false;
+				} else {
+					span9.textContent = ' ';
+				}
+
+				//banco
+				const nCCC = document.getElementById('ccc').value;
+				const regexCCC = /^[0-9]{20}$/
+				const span10 = document.getElementById('info_ccc');
+				if (!regexCCC.test(nCCC)){
+					span10.textContent = 'Mira aquí no te culpo porque a mí también me pasaría, pero cópialo bien, anda'
+					ok = false;
+				} else {
+					span10.textContent = ' ';
+				}
+
+				return ok;
+			}	
+			
+			function limpiar () {
+				let spans = document.getElementsByTagName('span');
+				for (let i=0; i < spans.length; i++)
+					spans[i].textContent = ' ';
+			}
 			
 		</script>
 	</head>
@@ -19,7 +158,7 @@
 	<body>
 
 		<h1>Ejercicio Validación de Formularios</h1>
-		<form id="formulario_1">
+		<form id="formulario_1" onsubmit="return comprobar()" onreset="limpiar()">
 		<p>
 			<h3>Formulario de Registro:</h3>
 			<label for="nombre">Nombre: </label>
@@ -44,9 +183,9 @@
 			<label>Sexo: </label>
       <input type="radio" name="sexo" id="femenino" value="femenino" />
       <label for="femenino">Femenino</label>
-			<input type="radio" name="sexo" value="masculino" />
+			<input type="radio" name="sexo" id="masculino" value="masculino" />
 			<label for="masculino">Masculino</label>
-			<input type="radio" name="sexo" value="ni_me_acuerdo" />
+			<input type="radio" name="sexo" id="ni_me_acuerdo" value="ni_me_acuerdo" />
 			<label for="ni_me_acuerdo">hace tanto que ni me acuerdo</label>
       <span id="info_sexo"></span>
 			<br><br><br>
