@@ -11,16 +11,73 @@
 		<script src="Utilidades.js"></script>
 		<script>
 
-					
-			
-			
+			function comprobar (){
+
+				//creamos un booleano que si es true enviará el formulario, si es false no
+				let ok = true;
+
+				//cogemos la longitud del nombre y la comprobamos
+				let longNombre = document.getElementById('nombre').value;
+				longNombre = longNombre.length;
+				
+				//Si la longitud es menor que 2, saltamos el error, si no, pues no
+				const span1 = document.getElementById('info_nombre');
+				if (longNombre < 2){
+					span1.textContent = "El mínimo es 2 caracteres, lo pone ahí, lee un poco, porfa";
+					ok = false;
+				} else {
+					span1.textContent = " ";
+				}
+
+
+				//cogemos el dni y lo comprobamos
+				const dni = document.getElementById('dni').value;
+
+				const span2 = document.getElementById('info_dni');
+				//Comparamos el texto introducido por el usuario con el formato
+				const regexDNI = /^[0-9]{8}[A-Z]$/;
+				if (!regexDNI.test(dni)){
+					span2.textContent = "Formato incorrecto, un DNI siempre tiene 8 números y una letra, mira el tuyo y lo descubrirás";
+					ok = false;
+				} else{
+					span2.textContent = ' ';
+				}
+
+
+				//cogemos el valor del campo sexo
+				const sexo = document.getElementById('sexo').value;
+
+				//comprobamos si está elegida una opción o no
+				const span3 = document.getElementById('info_sexo');
+				if (sexo === ""){
+					span3.textContent = 'No has elegido una opción, ¿Qué te pongo en este apartado? ¿Que directamente no eres?';
+					ok = false;
+				} else if (sexo === "Y"){
+					span3.textContent = 'JA, vaya pringao. En verdad estoy igual que tú, yo tampoco tengo :(';
+				} else {
+					span3.textContent = ' ';
+				}
+
+
+				const sug = document.getElementById('sugerencia').value;
+
+				const span4 = document.getElementById('info_sugerencia');
+				if (sug == ''){
+					span4.textContent = 'Porfa, sugiere algo, que si no me aburro';
+					ok = false;
+				} else {
+					span4.textContent = ' ';
+				}
+
+				return ok;
+			}	
 		</script>
 	</head>
 
 	<body>
 
 		<h1>Ejercicio Validación de Formularios</h1>
-		<form id="formulario_1">
+		<form id="formulario_1" onsubmit="return comprobar()">
 		<p>
 			<h3>Formulario de Registro:</h3>
 			<label for="nombre">Nombre: </label>
@@ -52,7 +109,7 @@
 		<p><b>Todos los campos son obligatorios.</b></p>
 		<br>
 		<p>
-			<input type="submit" value="ENVIAR" >
+			<input type="submit" value="ENVIAR">
 			<br><br>
 			<input type="reset" value="Limpiar">
 			
