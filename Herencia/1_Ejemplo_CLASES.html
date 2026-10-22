@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Ejemplo 1 · CLASES en JavaScript</title>
+	<style>
+		body { font-family: sans-serif; }
+		#salida { margin-left: 4%; }
+		.error { color: #b00020; font-weight: bold; }
+	</style>
+
+	<script>
+	// ================================================================
+	//  EJEMPLO 1 · CLASES Y COMPOSICIÓN
+	//  Un Círculo TIENE un Punto (su centro).
+	//  Un Cilindro TIENE un Círculo (su base) y una altura.
+	// ================================================================
+
+	//  Clase Punto  (YA RESUELTA: es el modelo a seguir)
+	class Punto {
+    // Parámetros por defecto: si no se pasan, valen 0.
+    constructor(x = 0, y = 0) {
+        if (x instanceof Punto) { // "Constructor copia": new Punto(otroPunto)
+            	this.x = x.x;
+            	this.y = x.y;
+        	} else { // new Punto(3, 4)
+            	this.x = x;
+            	this.y = y;
+        	}
+    	}
+
+    	mostrar() {
+        	return `(${this.x}, ${this.y})`;
+    	}
+	} // Punto
+
+
+// Clase Circulo (COMPOSICIÓN: tiene un Punto)
+class Circulo {
+    constructor(x = 0, y = 0, r = 0) {
+        // Si el primer argumento es un Punto: new Circulo(punto, r)
+        if (x instanceof Punto) {
+            this.centro = new Punto(x); // Copiamos el punto para mantener encapsulamiento
+            this.r = y;                 // El segundo argumento en este caso es el radio
+        } else { 
+            // Si son coordenadas numéricas: new Circulo(x, y, r)
+            this.centro = new Punto(x, y);
+            this.r = r;
+        }
+    }
+
+    mostrar() {
+        return `centro ${this.centro.mostrar()}, radio ${this.r}`;
+    }
+
+    longCircunferencia() {
+        return 2 * Math.PI * this.r;
+    }
+
+    area() {
+        return Math.PI * Math.pow(this.r, 2);
+    }
+} // Circulo
+
+
+// Clase Cilindro (COMPOSICIÓN: tiene un Circulo como base)
+class Cilindro {
+    constructor(base = new Circulo(), altura = 0) {
+        // Guardamos una copia del círculo base y la altura
+        this.base = new Circulo(base.centro, base.r);
+        this.altura = altura;
+    }
+
+    mostrar() {
+        return `base [${this.base.mostrar()}], altura ${this.altura}`;
+    }
+
+    volumen() {
+        // área de la base · altura
+        return this.base.area() * this.altura;
+    }
+} // Cilindro
+
+
+	//  ----------------------------------------------------------------
+	//  Programa de prueba  (NO hace falta tocarlo)
+	//  ----------------------------------------------------------------
+	function probar(idSalida) {
+		const salida = document.getElementById(idSalida);
+		const num = v => (typeof v === "number") ? v.toFixed(2) : v;   //  redondea si ya es un número
+		try {
+			let sal = "<p>Creamos un Punto p:<br>";
+			const p = new Punto(11, 15);
+			sal += "p = " + p.mostrar() + "</p>";
+
+			sal += "<p>Creamos dos Círculos c1 y c2:<br>";
+			const c1 = new Circulo(26, 42, 8);
+			const c2 = new Circulo(p, 4);
+			sal += "c1 = " + c1.mostrar() + "<br>";
+			sal += "c2 = " + c2.mostrar() + "</p>";
+
+			sal += "<p>Longitud circunferencia c1 = " + num(c1.longCircunferencia()) + "<br>";
+			sal += "Longitud circunferencia c2 = " + num(c2.longCircunferencia()) + "<br>";
+			sal += "Área c1 = " + num(c1.area()) + "<br>";
+			sal += "Área c2 = " + num(c2.area()) + "</p>";
+
+			sal += "<p>Creamos dos Cilindros cilindro1 y cilindro2:<br>";
+			const cilindro1 = new Cilindro(c1, 10);
+			const cilindro2 = new Cilindro(c2, 15);
+			sal += "cilindro1 = " + cilindro1.mostrar() + "<br>";
+			sal += "cilindro2 = " + cilindro2.mostrar() + "<br>";
+			sal += "Volumen cilindro1 = " + num(cilindro1.volumen()) + "<br>";
+			sal += "Volumen cilindro2 = " + num(cilindro2.volumen()) + "</p>";
+
+			salida.innerHTML = sal;
+		} catch (e) {
+			salida.innerHTML = `<p class="error">Error: ${e.message}</p>`;
+			console.error(e);
+		}
+	}
+	</script>
+</head>
+
+<body>
+	<h2>Ejemplo 1 · CLASES en JavaScript</h2>
+	<h3>Cómo crear e instanciar clases, y cómo construir objetos a partir de otros (composición)</h3>
+	<p>Un <b>Círculo</b> tiene un <b>Punto</b> (su centro) y un <b>Cilindro</b> tiene un <b>Círculo</b> (su base).</p>
+	<p>Completa las clases <b>Circulo</b> y <b>Cilindro</b> hasta que no salga ningún <i>undefined</i>.</p>
+
+	<p><button onclick="probar('salida')">Probar</button></p>
+	<div id="salida"></div>
+</body>
+</html>

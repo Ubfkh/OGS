@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Ejercicio 3 · TIENDA: composición y herencia</title>
+	<style>
+		body { font-family: sans-serif; }
+		#salida { margin-left: 4%; }
+		.error { color: #b00020; font-weight: bold; }
+		.enunciado { max-width: 820px; }
+	</style>
+
+	<script>
+	// ================================================================
+	//  EJERCICIO 3 · TIENDA ONLINE
+	//  HERENCIA:    un Libro ES un Producto; un Alimento ES un Producto.
+	//  COMPOSICIÓN: un Carrito TIENE un Cliente y TIENE varios Productos.
+	// ================================================================
+
+	//  Clase Cliente  (YA RESUELTA)
+	class Cliente {
+		constructor(nombre, email) {
+			this.nombre = nombre;
+			this.email = email;
+		}
+
+		mostrar() {
+			return `${this.nombre} (${this.email})`;
+		}
+	}  //  Cliente
+
+
+	//  Clase base: Producto  (YA RESUELTA · IVA general del 21 %)
+	class Producto {
+		constructor(nombre, precio) {
+			this.nombre = nombre;
+			this.precio = precio;   //  precio sin IVA
+		}
+
+		iva() {
+			return 0.21;
+		}
+
+		precioFinal() {
+			return this.precio * (1 + this.iva());   //  usa el iva() del objeto real
+		}
+
+		mostrar() {
+			return `${this.nombre}: ${this.precio.toFixed(2)} € + IVA ${this.iva() * 100} % = ${this.precioFinal().toFixed(2)} €`;
+		}
+	}  //  Producto
+
+
+	class Libro extends Producto {
+	constructor(nombre, precio, autor) {
+		super(nombre, precio);
+		this.autor = autor;
+	}
+	iva() { return 0.04; }
+	mostrar() { return `${super.mostrar()} · autor: ${this.autor}`; }
+}
+
+class Alimento extends Producto {
+	constructor(nombre, precio, caducidad) {
+		super(nombre, precio);
+		this.caducidad = caducidad;
+	}
+	iva() { return 0.10; }
+	mostrar() { return `${super.mostrar()} · caduca: ${this.caducidad}`; }
+}
+
+class Carrito {
+	constructor(cliente) {
+		this.cliente = cliente;
+		this.productos = [];
+	}
+	agregar(producto) { this.productos.push(producto); }
+	total() { return this.productos.reduce((suma, prod) => suma + prod.precioFinal(), 0); }
+	mostrar() {
+		let res = `Carrito de ${this.cliente.mostrar()} (${this.productos.length} productos):<br>`;
+		for (const prod of this.productos) { res += ` - ${prod.mostrar()}<br>`; }
+		res += `<b>TOTAL: ${this.total().toFixed(2)} €</b>`;
+		return res;
+	}
+}
+
+
+
+	//  ----------------------------------------------------------------
+	//  Programa de prueba  (NO hace falta tocarlo)
+	//  ----------------------------------------------------------------
+	function probar(idSalida) {
+		const salida = document.getElementById(idSalida);
+		try {
+			let sal = "<p>Creamos tres productos de tipos distintos:<br>";
+			const auriculares = new Producto("Auriculares", 50);
+			const quijote = new Libro("El Quijote", 20, "Cervantes");
+			const aceite = new Alimento("Aceite de oliva", 10, "2027-03-01");
+			sal += auriculares.mostrar() + "<br>";
+			sal += quijote.mostrar() + "<br>";
+			sal += aceite.mostrar() + "</p>";
+
+			sal += "<p>¿Qué es cada uno?<br>";
+			sal += "quijote instanceof Libro = " + (quijote instanceof Libro) + "<br>";
+			sal += "quijote instanceof Producto = " + (quijote instanceof Producto) + "<br>";
+			sal += "auriculares instanceof Libro = " + (auriculares instanceof Libro) + "</p>";
+
+			sal += "<p>Creamos un cliente y su carrito:<br>";
+			const ana = new Cliente("Ana", "ana@correo.es");
+			const carrito = new Carrito(ana);
+			carrito.agregar(auriculares);
+			carrito.agregar(quijote);
+			carrito.agregar(aceite);
+			sal += carrito.mostrar() + "</p>";
+
+			salida.innerHTML = sal;
+		} catch (e) {
+			salida.innerHTML = `<p class="error">Error: ${e.message}</p>`;
+			console.error(e);
+		}
+	}
+	</script>
+</head>
+
+<body>
+	<h2>Ejercicio 3 · Tienda online: composición y herencia</h2>
+	<div class="enunciado">
+		<p>Las clases <b>Cliente</b> y <b>Producto</b> ya están hechas. Crea:</p>
+		<ul>
+			<li><b>Libro extends Producto</b>: añade el <code>autor</code>. Su IVA es del 4 %. Su <code>mostrar()</code> añade el autor al del padre.</li>
+			<li><b>Alimento extends Producto</b>: añade la <code>caducidad</code>. Su IVA es del 10 %. Su <code>mostrar()</code> añade la caducidad.</li>
+			<li><b>Carrito</b> (composición): tiene un <code>Cliente</code> y una lista de productos. Métodos <code>agregar(producto)</code>, <code>total()</code> y <code>mostrar()</code>.</li>
+		</ul>
+		<p><b>Resultados esperados:</b> auriculares 60.50 €, El Quijote 20.80 €, aceite 11.00 €, total del carrito 92.30 €.</p>
+		<p><i>Para pensar: ¿por qué Libro hereda de Producto pero Carrito no hereda de Cliente?</i></p>
+	</div>
+
+	<p><button onclick="probar('salida')">Probar</button></p>
+	<div id="salida"></div>
+</body>
+</html>

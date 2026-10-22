@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Ejercicio 1 · CLASES en JavaScript</title>
+	<style>
+		body { font-family: sans-serif; }
+		#salida { margin-left: 4%; }
+		.error { color: #b00020; font-weight: bold; }
+		.enunciado { max-width: 760px; }
+	</style>
+
+	<script>
+	// ================================================================
+	//  EJERCICIO 1 · RECTÁNGULO Y CAJA
+	//  Un Rectángulo TIENE dos Puntos (esquinas opuestas).
+	//  Una Caja TIENE un Rectángulo y una profundidad.
+	// ================================================================
+
+	//  Clase Punto  (YA RESUELTA)
+	class Punto {
+		constructor(x = 0, y = 0) {
+			if (x instanceof Punto) {
+				this.x = x.x;
+				this.y = x.y;
+			} else {
+				this.x = x;
+				this.y = y;
+			}
+		}
+
+		mostrar() {
+			return `(${this.x}, ${this.y})`;
+		}
+	}  //  Punto
+
+
+	// < EJERCICIO: CREA AQUÍ LA CLASE Rectangulo > //
+class Rectangulo {
+  constructor(x1 = 0, y1 = 0, x2 = 0, y2 = 0) {
+    if (x1 instanceof Punto && y1 instanceof Punto) {
+      // Si los dos primeros parámetros son instancias de Punto
+      this.p1 = new Punto(x1);
+      this.p2 = new Punto(y1);
+    } else {
+      // Si se pasan las coordenadas por separado
+      this.p1 = new Punto(x1, y1);
+      this.p2 = new Punto(x2, y2);
+    }
+  }
+
+  // Métodos auxiliares para obtener base y altura de forma limpia
+  get base() {
+    return Math.abs(this.p2.x - this.p1.x);
+  }
+
+  get altura() {
+    return Math.abs(this.p2.y - this.p1.y);
+  }
+
+  mostrar() {
+    return `[${this.p1.mostrar()}, ${this.p2.mostrar()}]`;
+  }
+
+  perimetro() {
+    return 2 * (this.base + this.altura);
+  }
+
+  area() {
+    return this.base * this.altura;
+  }
+}
+
+// < EJERCICIO: CREA AQUÍ LA CLASE Caja > //
+class Caja {
+  constructor(rectangulo, profundidad = 0) {
+    this.rectangulo = rectangulo;
+    this.profundidad = profundidad;
+  }
+
+  mostrar() {
+    return `${this.rectangulo.mostrar()} x ${this.profundidad}`;
+  }
+
+  volumen() {
+    return this.rectangulo.area() * this.profundidad;
+  }
+}
+
+
+
+
+	//  ----------------------------------------------------------------
+	//  Programa de prueba  (NO hace falta tocarlo)
+	//  ----------------------------------------------------------------
+	function probar(idSalida) {
+		const salida = document.getElementById(idSalida);
+		try {
+			let sal = "<p>Creamos dos Puntos p1 y p2:<br>";
+			const p1 = new Punto(11, 15);
+			const p2 = new Punto(26, 42);
+			sal += "p1 = " + p1.mostrar() + "<br>";
+			sal += "p2 = " + p2.mostrar() + "</p>";
+
+			sal += "<p>Creamos dos Rectángulos r1 y r2:<br>";
+			const r1 = new Rectangulo(5, 7, 9, 11);   //  esquinas (5, 7) y (9, 11)
+			const r2 = new Rectangulo(p1, p2);
+			sal += "r1 = " + r1.mostrar() + "<br>";
+			sal += "r2 = " + r2.mostrar() + "</p>";
+
+			sal += "<p>Perímetro r1 = " + r1.perimetro() + "<br>";
+			sal += "Perímetro r2 = " + r2.perimetro() + "<br>";
+			sal += "Área r1 = " + r1.area() + "<br>";
+			sal += "Área r2 = " + r2.area() + "</p>";
+
+			sal += "<p>Creamos dos Cajas caja1 y caja2:<br>";
+			const caja1 = new Caja(r1, 10);
+			const caja2 = new Caja(r2, 15);
+			sal += "caja1 = " + caja1.mostrar() + "<br>";
+			sal += "caja2 = " + caja2.mostrar() + "<br>";
+			sal += "Volumen caja1 = " + caja1.volumen() + "<br>";
+			sal += "Volumen caja2 = " + caja2.volumen() + "</p>";
+
+			salida.innerHTML = sal;
+		} catch (e) {
+			salida.innerHTML = `<p class="error">Error: ${e.message}</p>`;
+			console.error(e);
+		}
+	}
+	</script>
+</head>
+
+<body>
+	<h2>Ejercicio 1 · CLASES en JavaScript</h2>
+	<div class="enunciado">
+		<h3>Crea las clases Rectangulo y Caja usando la clase Punto</h3>
+		<ul>
+			<li><b>Rectangulo</b>: se define con 2 puntos (esquinas opuestas). Métodos <code>mostrar()</code>, <code>perimetro()</code> y <code>area()</code>.</li>
+			<li><b>Caja</b>: es un rectángulo con profundidad. Métodos <code>mostrar()</code> y <code>volumen()</code>.</li>
+			<li>La base y la altura del rectángulo se calculan a partir de sus dos puntos.</li>
+		</ul>
+		<p><b>Resultados esperados:</b> perímetro r1 = 16, área r1 = 16, área r2 = 405, volumen caja1 = 160, volumen caja2 = 6075.</p>
+	</div>
+
+	<p><button onclick="probar('salida')">Probar</button></p>
+	<div id="salida"></div>
+</body>
+</html>

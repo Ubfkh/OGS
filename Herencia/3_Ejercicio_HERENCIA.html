@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Ejercicio 2 · HERENCIA en JavaScript</title>
+	<style>
+		body { font-family: sans-serif; }
+		#salida { margin-left: 4%; }
+		.error { color: #b00020; font-weight: bold; }
+	</style>
+
+	<script>
+	// ================================================================
+	//  EJERCICIO 2 · HERENCIA
+	//  Ahora un Círculo ES un Punto (con radio)
+	//  y un Cilindro ES un Círculo (con altura).
+	// ================================================================
+
+	//  Clase base: Punto  (YA RESUELTA)
+	class Punto {
+		constructor(x = 0, y = 0) {
+			if (x instanceof Punto) {   //  copia (también funciona si x es un Circulo o un Cilindro)
+				this.x = x.x;
+				this.y = x.y;
+			} else {
+				this.x = x;
+				this.y = y;
+			}
+		}
+
+		mostrar() {
+			return `(${this.x}, ${this.y})`;
+		}
+	}  //  Punto
+
+
+	//  Circulo HEREDA de Punto  (YA RESUELTA: es el modelo a seguir)
+	//     new Circulo(x, y, r)
+	//     new Circulo(punto, r)
+	//     new Circulo(otroCirculo)        (copia)
+	class Circulo extends Punto {
+		constructor(x = 0, y = 0, r = 0) {
+			super(x, y);   //  1º SIEMPRE: el constructor de Punto rellena this.x y this.y
+
+			//  OJO al orden: un Circulo también es instanceof Punto,
+			//  así que hay que preguntar primero por la clase más concreta.
+			if (x instanceof Circulo) {
+				this.r = x.r;
+			} else if (x instanceof Punto) {
+				this.r = y;
+			} else {
+				this.r = r;
+			}
+		}
+
+		//  REDEFINIMOS mostrar() y reutilizamos el de Punto con super
+		mostrar() {
+			return `centro ${super.mostrar()}, radio ${this.r}`;
+		}
+
+		longCircunferencia() {
+			return 2 * Math.PI * this.r;
+		}
+
+		area() {
+			return Math.PI * this.r ** 2;
+		}
+	}  //  Circulo
+
+
+	//  < EJERCICIO: CREA AQUÍ LA CLASE Cilindro, QUE HEREDA DE Circulo >
+	//
+	//  Se tiene que poder crear de todas estas formas:
+	//     new Cilindro(x, y, r, h)
+	//     new Cilindro(punto, r, h)
+	//     new Cilindro(circulo, h)
+	//     new Cilindro(otroCilindro)      (copia)
+	//
+	//  Métodos:
+	//     mostrar()   → REDEFINIDO: reutiliza el de Circulo con super.mostrar() y añade la altura
+	//     area()      → REDEFINIDO: superficie total = 2 · área de la base + longitud circunferencia · h
+	//     volumen()   → área de la BASE · h        (pista: super.area())
+	//
+	//  Recuerda: en el constructor, super(...) va ANTES de usar this.
+	class Cilindro extends Circulo {
+		constructor(x = 0, y = 0, r = 0, h = 0) {
+			// Invocamos al constructor de Circulo para inicializar centro y radio
+			super(x, y, r);
+
+			// Comprobamos el tipo de x de la clase más concreta a la más general
+			if (x instanceof Cilindro) {
+				this.h = x.h;
+			} else if (x instanceof Circulo) {
+				this.h = y; // El segundo parámetro es la altura h
+			} else if (x instanceof Punto) {
+				this.h = r; // El tercer parámetro es la altura h
+			} else {
+				this.h = h; // Todos los parámetros se pasaron de forma numérica
+			}
+		}
+
+		mostrar() {
+			return `${super.mostrar()}, altura ${this.h}`;
+		}
+
+		area() {
+			// Superficie total = 2 * área base + longitud circunferencia * altura
+			return 2 * super.area() + super.longCircunferencia() * this.h;
+		}
+
+		volumen() {
+			// Volumen = área base * altura
+			return super.area() * this.h;
+		}
+	}  //  Cilindro
+
+
+	//  ----------------------------------------------------------------
+	//  Programa de prueba  (NO hace falta tocarlo)
+	//  ----------------------------------------------------------------
+	function probar(idSalida) {
+		const salida = document.getElementById(idSalida);
+		const n = v => v.toFixed(2);
+		try {
+			let sal = "<p>Creamos un Punto p1 y otro p2 copiando p1:<br>";
+			const p1 = new Punto(11, 15);
+			const p2 = new Punto(p1);
+			p1.x = 69;   //  si p2 es una copia de verdad, no le afecta
+			sal += "p1 = " + p1.mostrar() + "<br>";
+			sal += "p2 = " + p2.mostrar() + "</p>";
+
+			sal += "<p>Creamos tres Círculos (c3 es una copia de c1):<br>";
+			const c1 = new Circulo(26, 42, 8);
+			const c2 = new Circulo(p2, 4);
+			const c3 = new Circulo(c1);
+			sal += "c1 = " + c1.mostrar() + "<br>";
+			sal += "c2 = " + c2.mostrar() + "<br>";
+			sal += "c3 = " + c3.mostrar() + "<br>";
+			sal += "c1.x (heredado de Punto) = " + c1.x + "</p>";
+
+			sal += "<p>Longitud circunferencia c1 = " + n(c1.longCircunferencia()) + "<br>";
+			sal += "Área c1 = " + n(c1.area()) + "<br>";
+			sal += "Área c2 = " + n(c2.area()) + "</p>";
+
+			sal += "<p>Creamos tres Cilindros:<br>";
+			const cilindro1 = new Cilindro(c1, 10);
+			const cilindro2 = new Cilindro(c2, 15);
+			const cilindro3 = new Cilindro(1, 2, 3, 4);
+			sal += "cilindro1 = " + cilindro1.mostrar() + "<br>";
+			sal += "cilindro2 = " + cilindro2.mostrar() + "<br>";
+			sal += "cilindro3 = " + cilindro3.mostrar() + "</p>";
+
+			sal += "<p>Área total cilindro1 = " + n(cilindro1.area()) + "<br>";
+			sal += "Volumen cilindro1 = " + n(cilindro1.volumen()) + "<br>";
+			sal += "Área total cilindro2 = " + n(cilindro2.area()) + "<br>";
+			sal += "Volumen cilindro2 = " + n(cilindro2.volumen()) + "</p>";
+
+			sal += "<p><b>Polimorfismo:</b> el mismo mensaje mostrar() a objetos distintos:<br>";
+			for (const figura of [p1, c1, cilindro1]) {
+				sal += figura.constructor.name + " → " + figura.mostrar() + "<br>";
+			}
+			sal += "cilindro1 instanceof Punto = " + (cilindro1 instanceof Punto) + "</p>";
+
+			salida.innerHTML = sal;
+		} catch (e) {
+			salida.innerHTML = `<p class="error">Error: ${e.message}</p>`;
+			console.error(e);
+		}
+	}
+	</script>
+</head>
+
+<body>
+	<h2>Ejercicio 2 · HERENCIA en JavaScript</h2>
+	<h3>Un Círculo es un Punto con radio; un Cilindro es un Círculo con altura</h3>
+	<p>La clase <b>Circulo extends Punto</b> ya está hecha. Crea la clase <b>Cilindro extends Circulo</b>.</p>
+	<p><b>Resultados esperados:</b> cilindro1: área total 904.78, volumen 2010.62 · cilindro2: área total 477.52, volumen 753.98.</p>
+
+	<p><button onclick="probar('salida')">Probar</button></p>
+	<div id="salida"></div>
+</body>
+</html>
