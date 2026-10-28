@@ -19,7 +19,18 @@
             <li>Maecenas nisl arcu</li>
         </ul>
 
-        <input type="button" id="btAnade" value="Añadir elemento">
+        <input type="button" id="btAnade" value="Añadir elemento" onclick="anade()">
 
+        <script>
+            function anade() {
+                let lista = document.getElementById('lista');
+
+                let nuevo = document.createElement('li');
+
+                nuevo.textContent = "OIBHOUB";
+
+                lista.appendChild(nuevo);
+            }
+        </script>
     </body>
 </html>
