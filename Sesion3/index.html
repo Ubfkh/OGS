@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda simulada</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
+    #cargando { color: #555; font-style: italic; }
+    #error { color: #b00020; }
+    #error button { margin-left: .5rem; }
+    ul { list-style: none; padding: 0; }
+    li { display: flex; justify-content: space-between; padding: .6rem .8rem; border-bottom: 1px solid #ddd; }
+    .agotado { color: #b00020; }
+    .oculto { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Tienda simulada</h1>
+
+  <p id="cargando" class="oculto">Cargando…</p>
+  <p id="error" class="oculto">
+    <span id="mensajeError"></span>
+    <button id="btnReintentar">Reintentar</button>
+  </p>
+  <ul id="listaProductos"></ul>
+
+  <script src="api.js"></script>
+  <script src="tienda.js"></script>
+</body>
+</html>
