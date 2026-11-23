@@ -1,0 +1,7 @@
+[
+  { "id": 1, "nombre": "Teclado mecánico", "precio": 59.9 },
+  { "id": 2, "nombre": "Ratón inalámbrico", "precio": 24.5 },
+  { "id": 3, "nombre": "Monitor 27\"", "precio": 219 },
+  { "id": 4, "nombre": "Auriculares", "precio": 39.99 },
+  { "id": 5, "nombre": "Webcam HD", "precio": 45 }
+]

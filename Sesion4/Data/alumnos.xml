@@ -1,0 +1,30 @@
+<clase>
+  <alumno>
+    <nombre>Juan</nombre>
+    <apellido>Pérez</apellido>
+    <edad>20</edad>
+    <foto>https://ejemplo.com/fotos/juan.jpg</foto>
+    <curso>Matemáticas</curso>
+  </alumno>
+  <alumno>
+    <nombre>Maria</nombre>
+    <apellido>García</apellido>
+    <edad>21</edad>
+    <foto>https://ejemplo.com/fotos/maria.jpg</foto>
+    <curso>Física</curso>
+  </alumno>
+  <alumno>
+    <nombre>Pedro</nombre>
+    <apellido>Ramírez</apellido>
+    <edad>22</edad>
+    <foto>https://ejemplo.com/fotos/pedro.jpg</foto>
+    <curso>Química</curso>
+  </alumno>
+  <alumno>
+    <nombre>Ana</nombre>
+    <apellido>López</apellido>
+    <edad>20</edad>
+    <foto>https://ejemplo.com/fotos/ana.jpg</foto>
+    <curso>Biología</curso>
+  </alumno>
+</clase>

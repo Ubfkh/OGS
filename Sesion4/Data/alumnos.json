@@ -1,0 +1,32 @@
+{
+  "clase": [
+    {
+      "nombre": "Juan",
+      "apellido": "Pérez",
+      "edad": 20,
+      "foto": "https://ejemplo.com/fotos/juan.jpg",
+      "curso": "Matemáticas"
+    },
+    {
+      "nombre": "Maria",
+      "apellido": "García",
+      "edad": 21,
+      "foto": "https://ejemplo.com/fotos/maria.jpg",
+      "curso": "Física"
+    },
+    {
+      "nombre": "Pedro",
+      "apellido": "Ramírez",
+      "edad": 22,
+      "foto": "https://ejemplo.com/fotos/pedro.jpg",
+      "curso": "Química"
+    },
+    {
+      "nombre": "Ana",
+      "apellido": "López",
+      "edad": 20,
+      "foto": "https://ejemplo.com/fotos/ana.jpg",
+      "curso": "Biología"
+    }
+  ]
+}

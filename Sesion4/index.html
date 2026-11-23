@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sesión 4 · Fetch con formatos</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+    section { border: 1px solid #ddd; border-radius: 6px; padding: .8rem 1rem; margin-bottom: 1rem; }
+    h2 { font-size: 1.1rem; margin: 0 0 .6rem; }
+    .caja { min-height: 2rem; padding: .5rem; background: #f6f6f6; border-radius: 4px; margin-top: .5rem; }
+    .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .6rem; }
+    .rejilla > div { border: 1px dashed #ccc; padding: .5rem; border-radius: 4px; }
+    .error { color: #b00020; }
+    .ok { color: #1b7f3a; }
+    table { border-collapse: collapse; width: 100%; margin-top: .5rem; }
+    th, td { border-bottom: 1px solid #ddd; padding: .3rem .5rem; text-align: left; }
+    ul { padding-left: 1.2rem; }
+  </style>
+</head>
+<body>
+  <h1>Sesión 4 · Fetch con formatos</h1>
+  <p>Ábrela con <strong>Live Server</strong>, no con doble clic. El ejercicio 4.1 sale en la consola (F12).</p>
+
+  <section>
+    <h2>4.2 · Cuatro formatos</h2>
+    <div class="rejilla">
+      <div><button data-fn="cargarJson">Cargar JSON</button><div id="json" class="caja"></div></div>
+      <div><button data-fn="cargarTxt">Cargar TXT</button><div id="txt" class="caja"></div></div>
+      <div><button data-fn="cargarHtml">Cargar HTML</button><div id="html" class="caja"></div></div>
+      <div><button data-fn="cargarXml">Cargar XML</button><div id="xml" class="caja"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>4.4 · Errores</h2>
+    <button data-fn="probarErrores">Probar errores</button>
+    <div id="errores" class="caja"></div>
+  </section>
+
+  <section>
+    <h2>4.5 · Alumnos en JSON y en XML</h2>
+    <button data-fn="mostrarAlumnos">Cargar alumnos</button>
+    <div id="alumnos" class="caja"></div>
+  </section>
+
+  <section>
+    <h2>4.6 · Informe de carga (ampliación)</h2>
+    <button data-fn="informe">Hacer informe</button>
+    <div id="informe" class="caja"></div>
+  </section>
+
+  <script src="ejercicios.js"></script>
+  <script>
+    // Conecta cada botón con la función que dice su data-fn. No hace falta tocarlo.
+    document.querySelectorAll('[data-fn]').forEach(boton => {
+      boton.addEventListener('click', () => {
+        const funcion = window[boton.dataset.fn];
+        if (typeof funcion === 'function') funcion();
+        else console.warn(`Todavía no existe la función ${boton.dataset.fn}()`);
+      });
+    });
+  </script>
+</body>
+</html>

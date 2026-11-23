@@ -1,0 +1,4 @@
+   <contenido>
+       <titulo>Contenido XML</titulo>
+       <mensaje>Este es un contenido cargado dinámicamente desde un archivo XML.</mensaje>
+   </contenido>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sesión 5 · Fetch y axios</title>
+  <!-- axios no viene con el navegador: lo cargamos desde un CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.7.9/dist/axios.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+    section { border: 1px solid #ddd; border-radius: 6px; padding: .8rem 1rem; margin-bottom: 1rem; }
+    h2 { font-size: 1.1rem; margin: 0 0 .6rem; }
+    .caja { min-height: 2rem; padding: .5rem; background: #f6f6f6; border-radius: 4px; margin-top: .5rem; }
+    .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .6rem; }
+    .rejilla > div { border: 1px dashed #ccc; padding: .5rem; border-radius: 4px; }
+    .error { color: #b00020; }
+    label { display: block; margin-bottom: .4rem; }
+    input { margin-left: .3rem; }
+  </style>
+</head>
+<body>
+  <h1>Sesión 5 · Fetch y axios</h1>
+  <p>Ábrela con <strong>Live Server</strong>. La tienda (5.5) está en la carpeta <code>tienda/</code>.</p>
+
+  <section>
+    <h2>5.1 · De fetch a axios</h2>
+    <div class="rejilla">
+      <div><button data-fn="cargarJson">JSON con axios</button><div id="json" class="caja"></div></div>
+      <div><button data-fn="cargarXml">XML con axios</button><div id="xml" class="caja"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>5.2 · Errores con axios</h2>
+    <button data-fn="probarErrores">Probar errores</button>
+    <div id="errores" class="caja"></div>
+  </section>
+
+  <section>
+    <h2>5.3 · Enviar un alumno (POST)</h2>
+    <label>Nombre <input id="nombre" value="Lucía"></label>
+    <label>Apellido <input id="apellido" value="Martín"></label>
+    <label>Curso <input id="curso" value="DWEC"></label>
+    <button data-fn="botonFetch">Enviar con fetch</button>
+    <button data-fn="botonAxios">Enviar con axios</button>
+    <div id="post" class="caja"></div>
+  </section>
+
+  <script src="ejercicios.js"></script>
+  <script>
+    // Conecta cada botón con la función que dice su data-fn. No hace falta tocarlo.
+    document.querySelectorAll('[data-fn]').forEach(boton => {
+      boton.addEventListener('click', () => {
+        const funcion = window[boton.dataset.fn];
+        if (typeof funcion === 'function') funcion();
+        else console.warn(`Todavía no existe la función ${boton.dataset.fn}()`);
+      });
+    });
+  </script>
+</body>
+</html>
